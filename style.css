@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap');
+
+:root {
+    --primary: #ffffff;
+    --background: #0a0a0a;
+    --brown: #A0522D;
+    --gray: #333333;
+    --glass: rgba(255, 255, 255, 0.1);
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--primary);
+}
+
+#three-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
+    opacity: 0;
+}
+
+h1 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 5rem;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    padding: 12px 32px;
+    font-size: 1.5rem;
+    font-family: 'Nanum Myeongjo', serif;
+    background: transparent;
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.05);
+}
+
+#math-ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 24px;
+    text-align: center;
+    min-width: 350px;
+    z-index: 100;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+#math-problem {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+#math-input {
+    font-size: 3rem;
+    border: none;
+    border-bottom: 4px solid #fff;
+    background: transparent;
+    text-align: center;
+    width: 200px;
+    outline: none;
+    font-weight: 700;
+    color: #fff;
+}
+
+#progress-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 8px;
+    background: var(--gray);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.1s linear;
+}
+
+.game-over-text {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 4rem;
+    color: var(--brown);
+    margin-bottom: 1rem;
+}
+
+#timer-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--primary);
+    margin-top: 10px;
+    transform-origin: left;
+}
