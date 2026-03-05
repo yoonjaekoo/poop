@@ -1,27 +1,45 @@
-import * as THREE from 'three';
+// Initial setup - Using global THREE (no imports for local file portability)
 
-// --- Setup ---
+// DATA URI for Poop (Generated)
+const POOP_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFmklEQVR4nO2dW28TRxTH/2vfG/v6Etsm9WkhDkgLIVUv8ALvXUqV+AAlVfUN6iN8iPIS5UOUV9SXqKofUKU8REpV9A0mIChCqEohTSk0TQshTSA277HPrfow612u17vXvtdje/A8f8lrZ+fMzszO38zeOWfWWIAAAAAAAAAAIB6N9A/Wp6pP1067F6v3K+dLv64eX6m068fdizX3S6m85C6Wlp1fT2v+338YmN88eXFhc/uMvXN6K08Yvj1rHzG3z189/eTFrTOnN98/XGg9v7HaeXGj2f7hRqP98uZa5+WNVvuXG/X2Kxv19itrtfar67X279Zr7XfXa+2v5mrtu/O19t35WvuHeVr7U/7G7T8v0m8/L9BvPy/Qbz8u0G8/L9BvPy/QLT8v0C0/L9AtPy/QLT8v0C2/L9Atvy+m7v/mH9z+42Kq6m9+P6KueuL9XkR98V4vou6270XU3fa9iOrbvhfR3Xbfi+huu+9FuO0+z+m2+zyn2+/znG6/z3O6/f6YVfX3f1X1fX9UdW//V9W7+G9Vr+rXqlf1Tf1u9eqS+l316pL6XfVv9W/Vv9Vv1Tf1Tf1WfVv9Vn1Tf1SXVXVZVXVZVZdVdVlVl1V1WVWXVXVZVZdVdVlVl1V1WVWXVXVZVZdVdVlVl1V1WVWXVXVZVZVZVZVZVZVZVZVZVZVZVQFAiXREOnKkdORIF9I96YHcRLogNzKTu5B7mcl9zP0+5P0B5EMh7H0FPH8Y+XAZ+Z8y8v8F5H87kP8rkP9pQ/6vSfkfD8T/NCT/X0TyfwVE8v9lRPK/ZUTWvR0j8u6eEnnvnpH1bs7IunsmIuvu74msu78vIuuun5F1188ZkXV3hsi6qzMi6666RFZdxUTWXVmJVfWWiKxeYCKrO1hYvYCJrN5fIrLqAySi7iYSUXeOiKjbS0TUXSAi6nYREXWXiYiq60BEdZdIRNV1I6LquhJR9YCIqN4XEFW9IKJ6X0RE9YCI6v0RIarvR4SosR+R3u09onfvS/Xuf7Heg6/Ue/CVeg++UO+Bl+o9+Ey9h1+pD/ED9SF+oT7GD9XH+In6FD9TH+Nn6mP8Xn+MH+mP8Yf6Y/xk/8mDq/5vI9V731G9+1vVu79Tvfu71LtvqXfPV+/eXerds9S7Z6h3z1LvntU/6Z9P+r6kfz7p+5L++ajvS9qXfC+5XnK9eF7yvHhf8rzkefG65XrxunRdvy9dl8+XjsunT8fV68vU68vU68uW68uW66uW66uS6yuS6wuS66t+66t+S6sS65pU7pZUnlWJdVXpWFf6L9YVf8W60W60m92Ldrdr0W6pFu2W6tFunXqR7m6jSHd3k0I7FmSxej7IK9V8YVat5QuzYi1fmBVq+fKsUMuXZ4Varjwr1HLlWa6WK09ytVx5lqvl/pIs95f6S7P9pc7+pT86+pe+6Ohf+KKjf/6Ljv7pLjr6pzvR0T/dhY6O/qUvOvqXvujoX/qio3/pi47+pS86+qe76Oif7qKjf+mLjvyP96OfN+of70ef76Y/7kwffXf87LvjZ9+7fPbd8Xm3/9H8u3Y7K3Y7O2Z/f798T/uN8rXyNbPfK189873yNbPfK189+73yNbPfK18z873yNbPfK18z+73yNbPfK18z873yNbPfK18j873yNbPfK18z873yNbPfK18z873yNbPfK18T873yNbPfK18T873yNbPfK18T873yNbPfK18T873ytfIu87XyNfO++D7yvfg++D74PvA++D74PvA++D7wvfA98L3wvfi++F58X3wvfi++F74XvxffC98L34vvi++H64vri8vL64vri+uL6yvry+sr6yvry+vL68vry+vL68vryyvL68sr64vri+ur86vzivOqcytzqXOqc6pzqnOqc6rzqvOqc6rxqvOq8anzqvGq86rxqvOq86rxqvGq8arnqvGq8anxqfGp8ajvqe+p76rvqu+q76rvqu+q76rvqu+q76rvqu+q66pvYm52Lu5t7m3u7e7t7u3u7u7u7+727u7u7u7u7u7u7u9zL3e5l7uVu5W7lbuVu5W7lbuVu5W7lbuVu5O7mUAAABIAAA8L07PT/I/2B9Svp6+9X01eXm/eb1+ub1unm7er1unm5unm5unm5unm5unm6ubq5urm6ubq9vL28vb28vb29vb0AAAAAAJRU5ErkJggg==";
+
 const container = document.getElementById('three-container');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);
+scene.background = new THREE.Color(0xf8f9fa);
+scene.fog = new THREE.Fog(0xf8f9fa, 10, 60);
 
-const camera = new THREE.PerspectiveCamera(75, 800 / 400, 0.1, 1000);
-camera.position.set(0, 5, 15);
-camera.lookAt(0, 0, 0);
+const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(16, 6, -4); // Slightly further back and more offset
+camera.lookAt(0, 2, -4); // Offset target in -Z to move player to the left
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(800, 400);
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.VSMShadowMap;
 container.appendChild(renderer.domElement);
 
-// Lights
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+// Lights - CLEAN & BRIGHT
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-dirLight.position.set(5, 10, 5);
-dirLight.castShadow = true;
-scene.add(dirLight);
+const spotLight = new THREE.SpotLight(0xffffff, 1.2);
+spotLight.position.set(20, 40, 20);
+spotLight.angle = Math.PI / 4;
+spotLight.penumbra = 0.5;
+spotLight.decay = 1.5;
+spotLight.distance = 200;
+spotLight.castShadow = true;
+spotLight.shadow.mapSize.width = 2048;
+spotLight.shadow.mapSize.height = 2048;
+scene.add(spotLight);
+
+const rimLight = new THREE.PointLight(0xffffff, 0.5);
+rimLight.position.set(-10, 10, -10);
+scene.add(rimLight);
+
+const textureLoader = new THREE.TextureLoader();
+const poopTexture = textureLoader.load(POOP_DATA_URI);
 
 // --- Game Constants ---
 const GROUND_SPEED = 0.2;
@@ -31,13 +49,17 @@ const FINISH_Z = -100;
 
 // --- State ---
 let gameState = 'START';
-let player, floor, finishLine;
+let player, floor, finishLine, skybox;
 let obstacles = [];
 let particles = [];
+let trail = []; // New trail effect (small continuous)
+let poopMarks = []; // New mechanic: poop on Space jump
 let distance = 0;
 let mathProblem = null;
 let spawnTimer = 0;
+let trailTimer = 0;
 let clearTimer = 0;
+let cameraShake = 0;
 
 // UI elements
 const startScreen = document.getElementById('start-screen');
@@ -47,9 +69,9 @@ const mathUI = document.getElementById('math-ui');
 const mathProblemText = document.getElementById('math-problem');
 const mathInput = document.getElementById('math-input');
 const timerBar = document.getElementById('timer-bar');
-const progressUI = document.getElementById('progress-container');
 const progressBar = document.getElementById('progress-bar');
 const clearText = document.getElementById('clear-text');
+
 
 // --- Classes ---
 
@@ -57,31 +79,38 @@ class Player {
     constructor() {
         this.group = new THREE.Group();
 
-        // Head
-        const headGeo = new THREE.SphereGeometry(0.5, 32, 32);
-        const blackMat = new THREE.MeshPhongMaterial({ color: 0x000000 });
-        this.head = new THREE.Mesh(headGeo, blackMat);
-        this.head.position.y = 4;
+        // Premium Material (Light Mode)
+        const avatarMat = new THREE.MeshPhysicalMaterial({
+            color: 0x222222,
+            metalness: 0.1,
+            roughness: 0.2,
+            clearcoat: 1,
+            clearcoatRoughness: 0.1
+        });
+
+        // Head (Simplified refined shape)
+        const headGeo = new THREE.SphereGeometry(0.4, 32, 32);
+        this.head = new THREE.Mesh(headGeo, avatarMat);
+        this.head.position.y = 3.5;
         this.group.add(this.head);
 
-        // Body
-        const bodyGeo = new THREE.CylinderGeometry(0.1, 0.1, 1.5);
-        this.body = new THREE.Mesh(bodyGeo, blackMat);
-        this.body.position.y = 3;
+        // Torso
+        const bodyGeo = new THREE.CapsuleGeometry(0.15, 0.8, 4, 8);
+        this.body = new THREE.Mesh(bodyGeo, avatarMat);
+        this.body.position.y = 2.8;
         this.group.add(this.body);
 
-        // Legs
-        this.leftLeg = this.createLimb();
-        this.rightLeg = this.createLimb();
-        this.leftLeg.position.set(-0.2, 2.2, 0);
-        this.rightLeg.position.set(0.2, 2.2, 0);
+        // Limbs (Refined)
+        this.leftLeg = this.createLimb(avatarMat);
+        this.rightLeg = this.createLimb(avatarMat);
+        this.leftLeg.position.set(-0.25, 2.2, 0);
+        this.rightLeg.position.set(0.25, 2.2, 0);
         this.group.add(this.leftLeg, this.rightLeg);
 
-        // Arms
-        this.leftArm = this.createLimb();
-        this.rightArm = this.createLimb();
-        this.leftArm.position.set(-0.4, 3.5, 0);
-        this.rightArm.position.set(0.4, 3.5, 0);
+        this.leftArm = this.createLimb(avatarMat);
+        this.rightArm = this.createLimb(avatarMat);
+        this.leftArm.position.set(-0.4, 3.2, 0);
+        this.rightArm.position.set(0.4, 3.2, 0);
         this.group.add(this.leftArm, this.rightArm);
 
         this.group.traverse(obj => { if (obj.isMesh) obj.castShadow = true; });
@@ -94,11 +123,10 @@ class Player {
         this.animTime = 0;
     }
 
-    createLimb() {
-        const geo = new THREE.CylinderGeometry(0.1, 0.1, 1.5);
-        const mat = new THREE.MeshPhongMaterial({ color: 0x000000 });
+    createLimb(mat) {
+        const geo = new THREE.CylinderGeometry(0.08, 0.08, 1.2);
         const mesh = new THREE.Mesh(geo, mat);
-        mesh.geometry.translate(0, -0.75, 0);
+        mesh.geometry.translate(0, -0.6, 0);
         return mesh;
     }
 
@@ -143,10 +171,22 @@ class Player {
 
 class Obstacle {
     constructor(z) {
-        const geo = new THREE.BoxGeometry(1.5, Math.random() * 2 + 1, 1);
-        const mat = new THREE.MeshPhongMaterial({ color: 0x333333 });
+        const shapeType = Math.floor(Math.random() * 4); // Increased variety
+        let geo;
+        if (shapeType === 0) geo = new THREE.BoxGeometry(1.5, Math.random() * 2 + 1, 1);
+        else if (shapeType === 1) geo = new THREE.CylinderGeometry(0.5, 0.5, Math.random() * 3 + 1, 16);
+        else if (shapeType === 2) geo = new THREE.TorusGeometry(0.8, 0.2, 8, 16);
+        else geo = new THREE.DodecahedronGeometry(0.8); // New shape: Dodecahedron
+
+        const mat = new THREE.MeshPhysicalMaterial({
+            color: 0xeeeeee,
+            metalness: 0.5,
+            roughness: 0.2,
+            emissive: 0x000000
+        });
         this.mesh = new THREE.Mesh(geo, mat);
-        this.mesh.position.set(0, geo.parameters.height / 2, z);
+        const yPos = shapeType === 0 ? geo.parameters.height / 2 : (shapeType === 1 ? geo.parameters.height / 2 : (shapeType === 3 ? 0.8 : 1));
+        this.mesh.position.set((Math.random() - 0.5) * 4, yPos, z);
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
         scene.add(this.mesh);
@@ -158,6 +198,45 @@ class Obstacle {
         scene.remove(this.mesh);
         this.mesh.geometry.dispose();
         this.mesh.material.dispose();
+    }
+}
+
+// Texture loading already handled at top
+
+class TrailNode {
+    constructor(pos) {
+        const material = new THREE.SpriteMaterial({ map: poopTexture, transparent: true, opacity: 0.8 });
+        this.sprite = new THREE.Sprite(material);
+        this.sprite.scale.set(0.1, 0.1, 1); // Smaller continuous trail
+        this.sprite.position.copy(pos);
+        this.sprite.position.y = 0.5;
+        this.life = 60;
+        scene.add(this.sprite);
+    }
+    update() {
+        this.life--;
+        this.sprite.material.opacity = this.life / 60;
+        this.sprite.position.z += GROUND_SPEED;
+    }
+    destroy() {
+        scene.remove(this.sprite);
+    }
+}
+
+class PoopMark {
+    constructor(pos) {
+        const material = new THREE.SpriteMaterial({ map: poopTexture, transparent: true });
+        this.sprite = new THREE.Sprite(material);
+        this.sprite.scale.set(0.8, 0.8, 1); // Larger specific mark
+        this.sprite.position.copy(pos);
+        this.sprite.position.y = 0.4; // On ground
+        scene.add(this.sprite);
+    }
+    update() {
+        this.sprite.position.z += GROUND_SPEED; // Stay on moving ground
+    }
+    destroy() {
+        scene.remove(this.sprite);
     }
 }
 
@@ -202,11 +281,10 @@ class MathHandler {
     constructor() {
         const ops = ['+', '-', '*'];
         this.op = ops[Math.floor(Math.random() * ops.length)];
-        this.n1 = Math.floor(Math.random() * 15) + 1;
-        this.n2 = Math.floor(Math.random() * 15) + 1;
+        this.n1 = Math.floor(Math.random() * 12) + 2; // Avoid 0 and 1 too often
+        this.n2 = Math.floor(Math.random() * 12) + 2;
         if (this.op === '-') [this.n1, this.n2] = [Math.max(this.n1, this.n2), Math.min(this.n1, this.n2)];
         this.answer = this.op === '+' ? this.n1 + this.n2 : this.op === '-' ? this.n1 - this.n2 : this.n1 * this.n2;
-        this.timer = 180;
     }
     getProblem() { return `${this.n1} ${this.op} ${this.n2} = ?`; }
 }
@@ -214,38 +292,91 @@ class MathHandler {
 // --- Initialization ---
 
 function initWorld() {
-    // Floor - Dark Grid
-    const floorGeo = new THREE.PlaneGeometry(40, 2000);
+    // Sun effect - Glowing sphere
+    const sunGeo = new THREE.SphereGeometry(3, 32, 32);
+    const sunMat = new THREE.MeshBasicMaterial({
+        color: 0xffffcc
+    });
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    sun.position.set(20, 30, -60);
+    scene.add(sun);
+
+    // Strong Sun Glow
+    const sunLight = new THREE.DirectionalLight(0xffffdd, 1.5);
+    sunLight.position.copy(sun.position);
+    sunLight.castShadow = true;
+    scene.add(sunLight);
+
+    const sunPoint = new THREE.PointLight(0xffffaa, 3, 150);
+    sunPoint.position.copy(sun.position);
+    scene.add(sunPoint);
+
+    // Environment - LIGHT CLEAN
+    const floorGeo = new THREE.PlaneGeometry(30, 1000);
     const floorMat = new THREE.MeshStandardMaterial({
-        color: 0x111111,
-        roughness: 0.1,
-        metalness: 0.5
+        color: 0xffffff,
+        roughness: 0.8,
+        metalness: 0.1
     });
     floor = new THREE.Mesh(floorGeo, floorMat);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
 
-    // Glowing Grid
-    const grid = new THREE.GridHelper(2000, 100, 0x4444ff, 0x222222);
-    grid.position.y = 0.1;
+    const grid = new THREE.GridHelper(1000, 100, 0xdddddd, 0xeeeeee);
+    grid.position.y = 0.05;
     scene.add(grid);
 
-    // Toilet - Metallic/Glow
+    // Toilet - High Quality Model
     const toiletGroup = new THREE.Group();
-    const chromeMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0, metalness: 1 });
-    const bowl = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.8, 1.5), chromeMat);
-    const tank = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 0.4), chromeMat);
-    tank.position.set(0, 1.15, -0.55);
+    const porcelainMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: 0.1,
+        metalness: 0.2
+    });
 
-    // Toilet glow
-    const light = new THREE.PointLight(0xffffff, 2, 10);
-    light.position.set(0, 3, 0);
-    toiletGroup.add(bowl, tank, light);
+    // Base/Pedestal
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.7, 0.8, 16), porcelainMat);
+    base.position.y = -0.3;
 
-    toiletGroup.position.set(0, 0.4, FINISH_Z);
+    // Bowl
+    const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.5, 0.8, 16), porcelainMat);
+    bowl.position.y = 0.5;
+
+    // Seat Rim
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.1, 16, 32), porcelainMat);
+    rim.rotation.x = Math.PI / 2;
+    rim.position.y = 0.9;
+
+    // Tank
+    const tank = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 0.5), porcelainMat);
+    tank.position.set(0, 1.2, -0.6);
+
+    // Flush Handle
+    const handle = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.2, 0.1), new THREE.MeshStandardMaterial({ color: 0xcccccc }));
+    handle.position.set(0.5, 1.6, -0.4);
+
+    // Seat Lid (open)
+    const lid = new THREE.Mesh(new THREE.BoxGeometry(1.3, 1.3, 0.1), porcelainMat);
+    lid.position.set(0, 1.4, -0.4);
+    lid.rotation.x = -0.2;
+
+    const toiletLight = new THREE.PointLight(0xffffff, 2, 10);
+    toiletLight.position.set(0, 3, 0);
+
+    toiletGroup.add(base, bowl, rim, tank, handle, lid, toiletLight);
+    toiletGroup.position.set(0, 0.6, FINISH_Z);
     scene.add(toiletGroup);
     finishLine = toiletGroup;
+
+    // Add some random background pillars for depth
+    for (let i = 0; i < 20; i++) {
+        const pillarGeo = new THREE.CylinderGeometry(0.5, 0.5, 20, 8);
+        const pillarMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.5 });
+        const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+        pillar.position.set(i % 2 === 0 ? -10 : 10, 10, -i * 50);
+        scene.add(pillar);
+    }
 
     player = new Player();
 }
@@ -255,6 +386,10 @@ function resetGame() {
     obstacles = [];
     particles.forEach(p => scene.remove(p));
     particles = [];
+    trail.forEach(t => t.destroy());
+    trail = [];
+    poopMarks.forEach(m => m.destroy());
+    poopMarks = [];
     distance = 0;
     mathProblem = null;
     clearTimer = 0;
@@ -268,12 +403,11 @@ function switchState(state) {
     gameState = state;
     console.log("Switching to state:", state);
 
-    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, progressUI, clearText];
+    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, clearText];
     overlays.forEach(el => { if (el) el.classList.add('hidden'); });
 
     if (state === 'START' && startScreen) startScreen.classList.remove('hidden');
     if (state === 'PLAYING') {
-        if (progressUI) progressUI.classList.remove('hidden');
         resetGame();
     }
     if (state === 'GAME_OVER' && gameOverScreen) gameOverScreen.classList.remove('hidden');
@@ -296,19 +430,31 @@ if (restartBtn) {
 
 window.addEventListener('keydown', (e) => {
     if (gameState === 'PLAYING' && !mathProblem && e.code === 'Space') {
+        // Leave poop on jump start
+        poopMarks.push(new PoopMark(player.group.position));
+
         mathProblem = new MathHandler();
-        mathProblemText.innerText = mathProblem.getProblem();
+        const problemElement = document.getElementById('math-problem');
+        if (problemElement) problemElement.textContent = mathProblem.getProblem();
+
         mathUI.classList.remove('hidden');
         mathInput.value = "";
-        mathInput.focus();
+        setTimeout(() => mathInput.focus(), 10);
         e.preventDefault();
     } else if (mathProblem && e.key === 'Enter') {
-        if (parseInt(mathInput.value) === mathProblem.answer) {
+        const val = parseInt(mathInput.value);
+        if (val === mathProblem.answer) {
             player.jump();
             mathProblem = null;
             mathUI.classList.add('hidden');
+            // Success flash/shake
+            cameraShake = 5;
         } else {
             mathInput.value = "";
+            // Error shake
+            cameraShake = 15;
+            mathUI.classList.add('error-shake');
+            setTimeout(() => mathUI.classList.remove('error-shake'), 400);
         }
     }
 });
@@ -323,6 +469,29 @@ function animate() {
     if (gameState === 'PLAYING' && !isPaused) {
         distance += GROUND_SPEED;
         player.update();
+
+        // Poop Trail
+        trailTimer++;
+        if (trailTimer > 10) {
+            trail.push(new TrailNode(player.group.position));
+            trailTimer = 0;
+        }
+        trail.forEach((node, idx) => {
+            node.update();
+            if (node.life <= 0) {
+                node.destroy();
+                trail.splice(idx, 1);
+            }
+        });
+
+        // Update Poop Marks
+        poopMarks.forEach((mark, idx) => {
+            mark.update();
+            if (mark.sprite.position.z > 20) {
+                mark.destroy();
+                poopMarks.splice(idx, 1);
+            }
+        });
 
         // Spawn obstacles
         spawnTimer++;
@@ -355,24 +524,17 @@ function animate() {
             }
         });
 
+        // Removed progress bar logic
+
         // World movement
         finishLine.position.z += GROUND_SPEED;
         if (finishLine.position.z >= 0) {
             switchState('CLEAR');
             player.setToThinker();
         }
-
-        progressBar.style.width = Math.min((distance / (Math.abs(FINISH_Z) * 5)) * 100, 100) + '%';
     }
 
-    if (isPaused) {
-        mathProblem.timer--;
-        timerBar.style.transform = `scaleX(${mathProblem.timer / 180})`;
-        if (mathProblem.timer <= 0) {
-            mathProblem = null;
-            mathUI.classList.add('hidden');
-        }
-    }
+    // Timer logic removed
 
     if (gameState === 'CLEAR') {
         clearTimer++;
@@ -381,14 +543,18 @@ function animate() {
         if (clearTimer > 450) switchState('START');
     }
 
-    // Camera follow and shake
+    // Camera follow and smooth movement
+    if (gameState === 'PLAYING') {
+        const shakeOffset = Math.sin(Date.now() * 0.001) * 0.5;
+        camera.position.z = -4 + shakeOffset;
+        camera.lookAt(0, 2, -5); // Keep target offset to maintain left-side framing
+    }
+
+    // Camera shake
     if (cameraShake > 0) {
-        camera.position.x = (Math.random() - 0.5) * cameraShake * 0.05;
-        camera.position.y = 4 + (Math.random() - 0.5) * cameraShake * 0.05;
+        camera.position.x += (Math.random() - 0.5) * cameraShake * 0.1;
+        camera.position.y += (Math.random() - 0.5) * cameraShake * 0.1;
         cameraShake *= 0.9;
-    } else {
-        camera.position.x = 0;
-        camera.position.y = 4;
     }
 
     renderer.render(scene, camera);
@@ -396,4 +562,13 @@ function animate() {
 
 initWorld();
 animate();
+
+// Explicitly set START state and ensure overlays are visible
 switchState('START');
+// Ensure the start button is correctly wired
+if (startBtn) {
+    startBtn.onclick = () => {
+        console.log("Start button triggered");
+        switchState('PLAYING');
+    };
+}
