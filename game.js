@@ -45,7 +45,9 @@ const poopTexture = textureLoader.load(POOP_DATA_URI);
 const GROUND_SPEED = 0.2;
 const GRAVITY = -0.015;
 const JUMP_FORCE = 0.35;
-const FINISH_Z = -100;
+const FINISH_BASE_Z = -100;
+const STAGE_INCREMENT_Z = -100;
+const MAX_STAGES = 9;
 
 // --- State ---
 let gameState = 'START';
@@ -55,7 +57,21 @@ let particles = [];
 let trail = []; // New trail effect (small continuous)
 let poopMarks = []; // New mechanic: poop on Space jump
 let distance = 0;
+let currentStage = 1;
 let mathProblem = null;
+
+// Story Data
+const STORY_LINES = [
+    "당신은 수학 학원에 앉아있다…",
+    "그런데 갑자기, ",
+    "당신은 똥이 마려웠다!!!!!!!!!!!!!!",
+    "그래서 당신은 쌤한테 “똥마려워요” 라고 말했다.",
+    "그래서 허락을 받고 똥을 싸러 나섰다. ",
+    "그런데, 복도가 점프맵이 되어있었다(?)",
+    "당신은 모든 스테이지를 깨야 똥을 쌀수 있다고 한다.",
+    "당신이 똥을 쌀 수 있기를 기원합니다…"
+];
+let currentStoryIndex = 0;
 let spawnTimer = 0;
 let trailTimer = 0;
 let clearTimer = 0;
@@ -71,6 +87,14 @@ const mathInput = document.getElementById('math-input');
 const timerBar = document.getElementById('timer-bar');
 const progressBar = document.getElementById('progress-bar');
 const clearText = document.getElementById('clear-text');
+const stageDisplay = document.getElementById('stage-display');
+const stageSelectScreen = document.getElementById('stage-select-screen');
+const stageSelectBtn = document.getElementById('stage-select-btn');
+const backToMenuBtn = document.getElementById('back-to-menu');
+const stageButtons = document.querySelectorAll('.stage-btn');
+const storyScreen = document.getElementById('story-screen');
+const storyLineText = document.getElementById('story-line');
+const storyNextBtn = document.getElementById('story-next-btn');
 
 
 // --- Classes ---
@@ -190,6 +214,19 @@ class Obstacle {
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
         scene.add(this.mesh);
+
+        // Store dimensions for collision
+        this.width = shapeType === 0 ? 1.5 : (shapeType === 1 ? 1 : 1.6);
+        this.height = shapeType === 0 ? geo.parameters.height : (shapeType === 1 ? geo.parameters.height : (shapeType === 2 ? 1.6 : 1.6));
+
+        // Define Y boundaries for precise vertical collision
+        this.minY = yPos - this.height / 2;
+        this.maxY = yPos + this.height / 2;
+        // Special case: Boxes and Cylinders are grounded by their yPos calculation
+        if (shapeType === 0 || shapeType === 1) {
+            this.minY = 0;
+            this.maxY = this.height;
+        }
     }
     update(speed) {
         this.mesh.position.z += speed;
@@ -365,7 +402,7 @@ function initWorld() {
     toiletLight.position.set(0, 3, 0);
 
     toiletGroup.add(base, bowl, rim, tank, handle, lid, toiletLight);
-    toiletGroup.position.set(0, 0.6, FINISH_Z);
+    toiletGroup.position.set(0, 0.6, FINISH_BASE_Z);
     scene.add(toiletGroup);
     finishLine = toiletGroup;
 
@@ -391,6 +428,11 @@ function resetGame() {
     poopMarks.forEach(m => m.destroy());
     poopMarks = [];
     distance = 0;
+    const finishZ = FINISH_BASE_Z + (currentStage - 1) * STAGE_INCREMENT_Z;
+    finishLine.position.z = finishZ;
+
+    if (stageDisplay) stageDisplay.textContent = `STAGE ${currentStage} / ${MAX_STAGES}`;
+
     mathProblem = null;
     clearTimer = 0;
     spawnTimer = 0;
@@ -403,15 +445,33 @@ function switchState(state) {
     gameState = state;
     console.log("Switching to state:", state);
 
-    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, clearText];
+    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, clearText, stageSelectScreen];
     overlays.forEach(el => { if (el) el.classList.add('hidden'); });
 
     if (state === 'START' && startScreen) startScreen.classList.remove('hidden');
+    if (state === 'STAGE_SELECT' && stageSelectScreen) stageSelectScreen.classList.remove('hidden');
     if (state === 'PLAYING') {
         resetGame();
     }
     if (state === 'GAME_OVER' && gameOverScreen) gameOverScreen.classList.remove('hidden');
     if (state === 'CLEAR' && clearScreen) clearScreen.classList.remove('hidden');
+    if (state === 'STORY' && storyScreen) {
+        storyScreen.classList.remove('hidden');
+        showNextStoryLine();
+    }
+}
+
+function showNextStoryLine() {
+    if (currentStoryIndex < STORY_LINES.length) {
+        storyLineText.textContent = STORY_LINES[currentStoryIndex];
+        // Trigger animation re-play
+        storyLineText.style.animation = 'none';
+        storyLineText.offsetHeight; // trigger reflow
+        storyLineText.style.animation = null;
+        currentStoryIndex++;
+    } else {
+        switchState('PLAYING');
+    }
 }
 
 // --- Interaction ---
@@ -420,12 +480,35 @@ const startBtn = document.getElementById('start-btn');
 if (startBtn) {
     startBtn.addEventListener('click', () => {
         console.log("Start button clicked");
-        switchState('PLAYING');
+        currentStoryIndex = 0;
+        switchState('STORY');
     });
 }
 const restartBtn = document.getElementById('restart-btn');
 if (restartBtn) {
     restartBtn.addEventListener('click', () => switchState('PLAYING'));
+}
+
+if (stageSelectBtn) {
+    stageSelectBtn.addEventListener('click', () => switchState('STAGE_SELECT'));
+}
+
+if (backToMenuBtn) {
+    backToMenuBtn.addEventListener('click', () => switchState('START'));
+}
+
+stageButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentStage = parseInt(btn.dataset.stage);
+        currentStoryIndex = 0;
+        switchState('STORY');
+    });
+});
+
+if (storyNextBtn) {
+    storyNextBtn.addEventListener('click', () => {
+        showNextStoryLine();
+    });
 }
 
 window.addEventListener('keydown', (e) => {
@@ -495,7 +578,8 @@ function animate() {
 
         // Spawn obstacles
         spawnTimer++;
-        if (spawnTimer > 80 && distance < Math.abs(FINISH_Z) * 5 - 20) {
+        const finishZ = Math.abs(FINISH_BASE_Z + (currentStage - 1) * STAGE_INCREMENT_Z);
+        if (spawnTimer > 80 && distance < finishZ * 5 - 20) {
             if (Math.random() < 0.02) {
                 obstacles.push(new Obstacle(-60));
                 spawnTimer = 0;
@@ -509,18 +593,27 @@ function animate() {
                 obs.destroy();
                 obstacles.splice(idx, 1);
             }
-            // Collision
-            const pX = 0;
-            const pZ = 0;
+            // Refined collision detection
+            const pX = 0; // Player is always at X=0 in world space (camera follows)
+            const pZ = 0; // Player is always at Z=0 in world space
             const oX = obs.mesh.position.x;
             const oZ = obs.mesh.position.z;
 
-            // Simplified radius-based for performance/accuracy in 3D
-            const dist = Math.sqrt((pZ - oZ) ** 2);
-            if (dist < 0.8 && player.y < obs.mesh.geometry.parameters.height) {
-                switchState('GAME_OVER');
-                new ParticleSystem(player.group.position);
-                cameraShake = 20;
+            // X-axis check (player width ~0.8)
+            const dx = Math.abs(pX - oX);
+            const dz = Math.abs(pZ - oZ);
+
+            if (dz < 0.7 && dx < (obs.width / 2 + 0.4)) {
+                // Precise vertical overlap check
+                // Player height is ~3.9 (Feet at player.y, Head at player.y + 3.9)
+                const playerTop = player.y + 3.9;
+                const playerBottom = player.y;
+
+                if (playerBottom < obs.maxY && playerTop > obs.minY) {
+                    switchState('GAME_OVER');
+                    new ParticleSystem(player.group.position);
+                    cameraShake = 20;
+                }
             }
         });
 
@@ -540,7 +633,15 @@ function animate() {
         clearTimer++;
         player.group.position.z = finishLine.position.z;
         if (clearTimer > 180) clearText.classList.remove('hidden');
-        if (clearTimer > 450) switchState('START');
+        if (clearTimer > 450) {
+            if (currentStage < MAX_STAGES) {
+                currentStage++;
+                switchState('PLAYING');
+            } else {
+                switchState('START');
+                currentStage = 1; // Reset for next game
+            }
+        }
     }
 
     // Camera follow and smooth movement

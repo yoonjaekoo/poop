@@ -92,7 +92,7 @@ canvas {
 
 /* Typography */
 h1 {
-    font-family: 'Nanum Myeongjo', serif;
+    font-family: 'Gungsuh', '궁서', 'cursive';
     font-weight: 800;
     font-size: 6.5rem;
     letter-spacing: -4px;
@@ -247,4 +247,86 @@ h1 {
     80% {
         transform: translate(-49%, -50%);
     }
+}
+
+/* HUD & Stage Display */
+#hud {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+#stage-display {
+    font-family: 'Gungsuh', '궁서', 'cursive';
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--text);
+    background: var(--glass);
+    padding: 10px 25px;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+}
+
+.start-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.section-title {
+    font-family: 'Gungsuh', '궁서', 'cursive';
+    font-size: 2.5rem;
+    margin: 1rem 0 2rem 0;
+}
+
+#stage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 2.5rem;
+}
+
+.stage-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    background: white;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.stage-btn:hover {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
+}
+
+#back-to-menu {
+    border: none;
+    background: #000;
+    color: #fff;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-family: 'Gungsuh', '궁서', 'cursive';
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+#back-to-menu:hover {
+    opacity: 0.8;
 }

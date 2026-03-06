@@ -7,23 +7,49 @@
     <title>싸지른! - THE ULTIMATE SURVIVAL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div id="game-container">
+        <!-- HUD -->
+        <div id="hud">
+            <div id="stage-display">STAGE 1 / 9</div>
+        </div>
         <!-- Start Screen -->
         <div id="start-screen" class="overlay">
             <div class="glass-card">
                 <h1 class="glitch" data-text="싸지른!">싸지른!</h1>
                 <p class="subtitle">THE ULTIMATE SURVIVAL</p>
-                <button class="btn btn-primary" id="start-btn">
-                    <span>무대 시작</span>
-                    <div class="btn-glow"></div>
-                </button>
+                <div class="start-btn-group">
+                    <button class="btn btn-primary" id="start-btn">
+                        <span>무대 시작</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button class="btn btn-secondary" id="stage-select-btn">
+                        <span>스테이지 선택</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage Select Overlay -->
+        <div id="stage-select-screen" class="overlay hidden">
+            <div class="glass-card">
+                <h2 class="section-title">스테이지 선택</h2>
+                <div id="stage-grid">
+                    <button class="stage-btn" data-stage="1">1</button>
+                    <button class="stage-btn" data-stage="2">2</button>
+                    <button class="stage-btn" data-stage="3">3</button>
+                    <button class="stage-btn" data-stage="4">4</button>
+                    <button class="stage-btn" data-stage="5">5</button>
+                    <button class="stage-btn" data-stage="6">6</button>
+                    <button class="stage-btn" data-stage="7">7</button>
+                    <button class="stage-btn" data-stage="8">8</button>
+                    <button class="stage-btn" data-stage="9">9</button>
+                </div>
+                <button class="btn btn-text" id="back-to-menu">뒤로 가기</button>
             </div>
         </div>
 
@@ -41,6 +67,18 @@
             <div id="clear-text" class="hidden">
                 <h1 class="clear-title">LEGENDARY</h1>
                 <p>당신은 살아남았습니다.</p>
+            </div>
+        </div>
+
+        <!-- Story Screen -->
+        <div id="story-screen" class="overlay hidden">
+            <div class="glass-card story-card">
+                <div id="story-text-container">
+                    <p id="story-line" class="story-text"></p>
+                </div>
+                <button class="btn btn-primary" id="story-next-btn">
+                    <span>다음</span>
+                </button>
             </div>
         </div>
 
