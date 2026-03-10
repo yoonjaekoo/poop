@@ -445,7 +445,7 @@ function switchState(state) {
     gameState = state;
     console.log("Switching to state:", state);
 
-    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, clearText, stageSelectScreen];
+    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, clearText, stageSelectScreen, storyScreen];
     overlays.forEach(el => { if (el) el.classList.add('hidden'); });
 
     if (state === 'START' && startScreen) startScreen.classList.remove('hidden');
@@ -666,10 +666,3 @@ animate();
 
 // Explicitly set START state and ensure overlays are visible
 switchState('START');
-// Ensure the start button is correctly wired
-if (startBtn) {
-    startBtn.onclick = () => {
-        console.log("Start button triggered");
-        switchState('PLAYING');
-    };
-}
