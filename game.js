@@ -316,14 +316,15 @@ class ParticleSystem {
 
 class MathHandler {
     constructor() {
-        const ops = ['+', '-', '*'];
-        this.op = ops[Math.floor(Math.random() * ops.length)];
-        this.n1 = Math.floor(Math.random() * 12) + 2; // Avoid 0 and 1 too often
-        this.n2 = Math.floor(Math.random() * 12) + 2;
-        if (this.op === '-') [this.n1, this.n2] = [Math.max(this.n1, this.n2), Math.min(this.n1, this.n2)];
-        this.answer = this.op === '+' ? this.n1 + this.n2 : this.op === '-' ? this.n1 - this.n2 : this.n1 * this.n2;
+        this.a = Math.floor(Math.random() * 10) + 3; // a: 3 to 12
+        this.x = Math.floor(Math.random() * 11) + 2; // x: 2 to 12 (answer)
+        this.b = Math.floor(Math.random() * 36) + 5; // b: 5 to 40
+        this.c = this.a * this.x + this.b;
+        this.answer = this.x;
     }
-    getProblem() { return `${this.n1} ${this.op} ${this.n2} = ?`; }
+    getProblem() { 
+        return `${this.a}x + ${this.b} = ${this.c}`; 
+    }
 }
 
 // --- Initialization ---
