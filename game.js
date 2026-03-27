@@ -95,6 +95,8 @@ const stageButtons = document.querySelectorAll('.stage-btn');
 const storyScreen = document.getElementById('story-screen');
 const storyLineText = document.getElementById('story-line');
 const storyNextBtn = document.getElementById('story-next-btn');
+const mobileControl = document.getElementById('mobile-control');
+const controlLabel = document.getElementById('control-label');
 
 
 // --- Classes ---
@@ -323,7 +325,7 @@ class MathHandler {
         this.answer = this.x;
     }
     getProblem() { 
-        return `${this.a}x + ${this.b} = ${this.c}`; 
+        return `\\(${this.a}x + ${this.b} = ${this.c}, \\quad x = ?\\)`; 
     }
 }
 
@@ -439,20 +441,28 @@ function resetGame() {
     spawnTimer = 0;
     if (player) scene.remove(player.group);
     player = new Player();
+    if (controlLabel) controlLabel.textContent = "JUMP";
     mathInput.value = "";
 }
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 function switchState(state) {
     gameState = state;
     console.log("Switching to state:", state);
 
-    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, clearText, stageSelectScreen, storyScreen];
+    const overlays = [startScreen, gameOverScreen, clearScreen, mathUI, clearText, stageSelectScreen, storyScreen, mobileControl];
     overlays.forEach(el => { if (el) el.classList.add('hidden'); });
 
     if (state === 'START' && startScreen) startScreen.classList.remove('hidden');
     if (state === 'STAGE_SELECT' && stageSelectScreen) stageSelectScreen.classList.remove('hidden');
     if (state === 'PLAYING') {
         resetGame();
+        if (mobileControl) mobileControl.classList.remove('hidden');
     }
     if (state === 'GAME_OVER' && gameOverScreen) gameOverScreen.classList.remove('hidden');
     if (state === 'CLEAR' && clearScreen) clearScreen.classList.remove('hidden');
@@ -512,36 +522,65 @@ if (storyNextBtn) {
     });
 }
 
-window.addEventListener('keydown', (e) => {
-    if (gameState === 'PLAYING' && !mathProblem && e.code === 'Space') {
-        // Leave poop on jump start
-        poopMarks.push(new PoopMark(player.group.position));
+function handlePrimaryAction() {
+    if (gameState !== 'PLAYING') return;
 
+    if (!mathProblem) {
+        // Trigger math problem
+        poopMarks.push(new PoopMark(player.group.position));
         mathProblem = new MathHandler();
         const problemElement = document.getElementById('math-problem');
-        if (problemElement) problemElement.textContent = mathProblem.getProblem();
-
+        if (problemElement) {
+            problemElement.innerHTML = mathProblem.getProblem();
+            if (window.MathJax) {
+                MathJax.typesetPromise([problemElement]);
+            }
+        }
         mathUI.classList.remove('hidden');
+        if (controlLabel) controlLabel.textContent = "GO!";
         mathInput.value = "";
         setTimeout(() => mathInput.focus(), 10);
-        e.preventDefault();
-    } else if (mathProblem && e.key === 'Enter') {
+    } else {
+        // Submit answer
         const val = parseInt(mathInput.value);
         if (val === mathProblem.answer) {
             player.jump();
             mathProblem = null;
             mathUI.classList.add('hidden');
-            // Success flash/shake
+            if (controlLabel) controlLabel.textContent = "JUMP";
             cameraShake = 5;
         } else {
             mathInput.value = "";
-            // Error shake
             cameraShake = 15;
             mathUI.classList.add('error-shake');
             setTimeout(() => mathUI.classList.remove('error-shake'), 400);
         }
     }
+}
+
+window.addEventListener('keydown', (e) => {
+    if (gameState === 'PLAYING') {
+        if (!mathProblem && e.code === 'Space') {
+            handlePrimaryAction();
+            e.preventDefault();
+        } else if (mathProblem && e.key === 'Enter') {
+            handlePrimaryAction();
+        }
+    }
 });
+
+// Mobile Control Events
+if (mobileControl) {
+    mobileControl.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        handlePrimaryAction();
+    }, { passive: false });
+
+    // Fallback for click (desktop testing)
+    mobileControl.addEventListener('click', (e) => {
+        handlePrimaryAction();
+    });
+}
 
 // --- Loop ---
 

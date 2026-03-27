@@ -9,6 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- MathJax for LaTeX equations -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                enableMenu: false
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
@@ -85,12 +98,17 @@
         <!-- Math UI -->
         <div id="math-ui" class="hidden">
             <div class="math-card">
-                <div id="math-problem">5 + 3 = ?</div>
+                <div id="math-problem">\( 5x + 10 = 20, \quad x = ? \)</div>
                 <div class="input-wrapper">
-                    <input type="text" id="math-input" autocomplete="off" maxlength="3" placeholder="?">
+                    <input type="text" id="math-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="3" placeholder="?">
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Controls -->
+        <button id="mobile-control" class="hidden">
+            <div id="control-label">JUMP</div>
+        </button>
 
         <div id="three-container"></div>
     </div>
